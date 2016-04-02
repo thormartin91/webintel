@@ -20,24 +20,36 @@ def registerUser():
 def getNewUserId():
 	file = open(readNextUserIdFrom, "r")
 	next_id = str(int(file.readline().split()[0])+1)				#get first word of first line of u.info, which contains amount of users. Increment and return as string
+	file.close()
+	incrementTotalUsers(next_id)
 	return next_id
 
 
 def addToUsers(line):
 	users = open(addUserTo, "a")
 	users.write("\n" + line)
+	users.close()
 
 def promptForGenrePrefs():
-	binaryString = "0"												#Sets "unknown" genre to 0 by default
+	binary_string = "0"												#Sets "unknown" genre to 0 by default
 	for i in range(1, len(genres)):
 		pref = raw_input("Do you like " + genres[i] + "? (Y/N) ").upper()
 		if pref == "Y":
-			binaryString += "1"
+			binary_string += "1"
 		else:
-			binaryString += "0"
-	return binaryString
+			binary_string += "0"
+	return binary_string
+
+def incrementTotalUsers(new_total):
+	file = open(readNextUserIdFrom, "r")
+	lines = file.readlines()
+	file.close()
+	print lines
+	lines[0] = str(new_total) + " users\n"
+	print lines
+	file = open(readNextUserIdFrom, "w")
+	for line in lines:
+		file.write(line)
+	file.close()
 
 registerUser()
-
-#todo
-#inkrementere users i info
