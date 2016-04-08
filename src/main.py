@@ -47,18 +47,30 @@ def loadData(path='../data'):
 
 # Load data from sample
 loadData(path='../sample')
-print prettyPrint(movies)
-print prettyPrint(user_ratings)
-print prettyPrint(movie_ratings)
+print 'MOVIES', prettyPrint(movies), '\n'
+print 'USER_RATINGS', prettyPrint(user_ratings), '\n'
+print 'MOVIE_RATINGS', prettyPrint(movie_ratings), '\n'
 
 
-def pearson(object_1, object_2):
-  from random import random
+def pearson(x, y):
   '''
   Returns the similarity between two objects
   '''
-  # TODO: implement this
-  return round(random(),1)
+  from math import sqrt
+  shared_movies = []
+  for movie in user_ratings[x]:
+    if movie in user_ratings[y]:
+      shared_movies.append(movie)
+  n =len(shared_movies)
+  if n == 0: return 0
+  mean_x = sum(user_ratings[x][movie] for movie in shared_movies)/n
+  mean_y = sum(user_ratings[y][movie] for movie in shared_movies)/n
+  numerator,denominator = 0,0
+  for movie in shared_movies:
+    numerator += ((user_ratings[x][movie] - mean_x) * (user_ratings[y][movie] - mean_y))
+    denominator += (sqrt(pow((user_ratings[x][movie] - mean_x),2)) * sqrt(pow((user_ratings[y][movie] - mean_y),2)))
+  if denominator == 0: return 0
+  return numerator/denominator
 
 
 def findMovies(this_user):
@@ -70,15 +82,27 @@ def findMovies(this_user):
     - What is the criteria for ordering movies rated by the simmilar user?
       (The highest rated movie of the simmilar user comes first, for now)
   '''
+  total_similarities = {} # for similar users
+  sum_of_similarities = {} # for shared movies
   other_users = {} # 'other_user_id': similarity_score
   for movie in user_ratings[this_user]: # movies this_user has rated
     for user in movie_ratings[movie]: # users who also has rated this movie
       if user != this_user: # do not compare with self
         other_users[user] = pearson(this_user, user) # compute similarity
-  similar_users = sorted(other_users, key=other_users.get, reverse=True) # sorted list of IDs for the most simmilar users
-  movies = user_ratings[similar_users[0]] # find movies rated by the most similar user
-  reccommended_movies = sorted(movies, key=movies.get, reverse=True) # sorted list of IDs for the highest rated movies users of the most simmilar user
-  return reccommended_movies
+  for user in other_users:
+    if other_users[user] <= 0: continue
+    for movie in user_ratings[user]:
+      if movie not in user_ratings[this_user]:
+        total_similarities.setdefault(movie, 0)
+        total_similarities[movie] += (user_ratings[user][movie] * other_users[user])
+        sum_of_similarities.setdefault(movie, 0)
+        sum_of_similarities[movie] += other_users[user]
+  rankings = [(total/sum_of_similarities[item],item) for item,total in total_similarities.items()]
+  rankings.sort()
+  rankings.reverse()
+  # TODO: Document these last lines better
+  return rankings
 
 
-#print findMovies('1')
+#print findMovies('4')
+#print pearson('3','1')
