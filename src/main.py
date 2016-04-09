@@ -1,16 +1,20 @@
+import addUser
 '''
 Global variables, loaded through loadData()
+  users:
+    { 'user_id': { 'genres': genres_string } }
   movies:
-    { 'movie_id': 'movie_title' }
+    { 'movie_id': { 'title': movie_title, 'genres': genres_string } }
   user_ratings:
     { 'user_id': { 'movie_title': rating } }
   movie_ratings:
     { 'movie_title': { 'user_id': rating } }
 '''
+genres = addUser.genres
+users = {}
 movies = {}
 user_ratings = {}
 movie_ratings = {}
-
 
 def prettyPrint(dictionary):
   '''
@@ -26,15 +30,26 @@ def loadData(path='../data'):
   '''
   # Load movies
   for line in open(path+'/u.item'):
-    (id, title, release_date, video_date, imdb) = line.split('|')[0:5]
-    movies[id] = title
+    (movie_id, title, release_date, video_date, imdb) = line.split('|')[0:5]
+    movies.setdefault(movie_id,{})
+    movies[movie_id]['title'] = title
     genres_string = ''.join(line.split('|')[5:24]).replace('\n', '')
+    movies[movie_id]['genres'] = genres_string
+    #print movie_id,title,release_date,video_date,imdb,genres_string
+
+  # Load users
+  for line in open(path+'/newU.user'):
+    (user_id, age, gender, occupation, postal_code, genres_string) = line.split('|')
+    users.setdefault(user_id,{})
+    users[user_id]['genres'] = genres_string.replace('\n', '')
+    #print user_id, age, gender, occupation, postal_code, genres_string
   
   # Load user_ratings
   for line in open(path+'/u.data'):
     (user_id,movie_id,rating,timestamp) = line.split('\t')
     user_ratings.setdefault(user_id,{})
-    user_ratings[user_id][movies[movie_id]] = float(rating)
+    user_ratings[user_id][movies[movie_id]['title']] = float(rating)
+    #print user_id,movie_id,rating,timestamp
 
   # Load movie_ratings (flipping the user_ratings)
   for user in user_ratings:
@@ -48,9 +63,33 @@ def loadData(path='../data'):
 # Load data from sample
 #loadData(path='../sample')
 loadData()
+#print 'USERS', prettyPrint(users), '\n'
 #print 'MOVIES', prettyPrint(movies), '\n'
 #print 'USER_RATINGS', prettyPrint(user_ratings), '\n'
 #print 'MOVIE_RATINGS', prettyPrint(movie_ratings), '\n'
+
+
+def topGenre(user_id):
+  '''
+  Returns a dictionary of the users prefered genres with sorted list of top rated movies
+  top_list = { 'genre': [(average_rating, movie_title), ...] }
+  '''
+  user_genre = users[user_id]['genres']
+  top_list = {}
+  for movie in movies:
+    title = movies[movie]['title']
+    if title not in movie_ratings: continue # skip movie if it has no rating
+    for index,value in enumerate(user_genre): # loop trough users genres
+      if value == '1': # user prefers this genre
+        if movies[movie]['genres'][index] == '1': # this movie is in this genre
+          top_list.setdefault(genres[index], [])
+          average_rating = round(sum(movie_ratings[title].values())/len(movie_ratings[title]), 3)
+          top_list[genres[index]].append((average_rating, title))
+  # sort each list with decending rating
+  for movie_list in top_list:
+    top_list[movie_list].sort()
+    top_list[movie_list].reverse()
+  return top_list
 
 
 def pearson(x, y):
@@ -100,8 +139,3 @@ def findMovies(this_user):
   rankings.sort()
   rankings.reverse()
   return rankings
-
-
-rec = findMovies('1')
-for r in rec:
-  print r
