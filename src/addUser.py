@@ -44,9 +44,9 @@ def incrementTotalUsers(new_total):
 	file = open(readNextUserIdFrom, "r")
 	lines = file.readlines()
 	file.close()
-	print lines
+	print(lines)
 	lines[0] = str(new_total) + " users\n"
-	print lines
+	print(lines)
 	file = open(readNextUserIdFrom, "w")
 	for line in lines:
 		file.write(line)

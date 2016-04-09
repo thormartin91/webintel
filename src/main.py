@@ -29,7 +29,7 @@ def loadData(path='../data'):
   Loads data into global variables
   '''
   # Load movies
-  for line in open(path+'/u.item'):
+  for line in open(path+'/u.item',encoding = "ISO-8859-1"):
     (movie_id, title, release_date, video_date, imdb) = line.split('|')[0:5]
     movies.setdefault(movie_id,{})
     movies[movie_id]['title'] = title

@@ -2,21 +2,38 @@ import sys
 from tkinter import *
 readNextUserIdFrom = "../data/u.info"
 addUserTo = "../data/u.user"
+from main import findMovies
 
 
-def loadUserProfile():
-    return
+def promptUserLogin():
+    user = StringVar()
+    login_l = Label(text = 'Log in using your user ID:').pack()
+    user_e = Entry(textvariable = user).pack()
+    login_b = Button(text = 'Log in', command = lambda: loadUserProfile(user.get())).pack()
+    
+
+def loadUserProfile(user):
+    welcome_label = Label(text = 'Welcome, user #'+user+'!', font = ('helvetica', 20)).pack()
+    recommend_b = Button(text = 'Recommend a movie for me', command = lambda: recommend(user)).pack()
+
+def recommend(user):
+    print('Shit worked')
+    ranked_list = findMovies(user)[0:10]
+    print(ranked_list)
     
 
 def registerUser2():
-    #user_id = getNewUserId()
-    c = Checkbutton(state = ACTIVE, text="Expand").pack()
     form_label = Label(text= 'Personal information:').pack()
-    
+
+    name_l = Label(text='Name:').pack()
     name_e=Entry(textvariable = name).pack()#"Name:"										#Name will not be registered with user
+    age_l = Label(text='Age:').pack()
     age_e = Entry(textvariable = age).pack()
+    gender_l = Label(text='Gender (M/F/O):').pack()
     gender_e = Entry(textvariable = gender).pack()
+    occ_l = Label(text='Occupation:').pack()
     occ_e = Entry(textvariable = occupation).pack()
+    zip_l = Label(text='Zip code:').pack()
     zip_e = Entry(textvariable = zip_code).pack()
 
     continueButton = Button(text = 'Continue', command = cont).pack()
@@ -49,12 +66,7 @@ def cont():
 
 def save():
     user_id = getNewUserId()
-    
-    print(var_list)
     var_list.extend((var1.get(),var2.get(),var3.get(),var4.get(),var5.get(),var6.get(),var7.get(),var8.get(),var9.get(),var10.get(),var11.get(),var12.get(),var13.get(),var14.get(),var15.get(),var16.get(),var17.get(),var18.get()))
-    print(var_list)
-    print(var_list[0])
-    print(len(var_list))
     prefs = "0"
     for i in range(0,len(var_list)):
         if var_list[i] == 1:
@@ -66,6 +78,10 @@ def save():
     line_to_add = user_id + "|" + age.get() + "|" + gender.get() + "|" + occupation.get() + "|" + zip_code.get() + "|" + preferences
     addToUsers(line_to_add)
     registeredLabel = Label(text = 'You are now registered! Log in with user ID:     ' + user_id).pack()
+    ok_button = Button(text = 'Ok', command =  close).pack()
+
+def close():
+    mgui.destroy()
 
 def getNewUserId():
 	file = open(readNextUserIdFrom, "r")
@@ -78,9 +94,7 @@ def incrementTotalUsers(new_total):
 	file = open(readNextUserIdFrom, "r")
 	lines = file.readlines()
 	file.close()
-	print(lines)
 	lines[0] = str(new_total) + " users\n"
-	print(lines)
 	file = open(readNextUserIdFrom, "w")
 	for line in lines:
 		file.write(line)
@@ -125,12 +139,13 @@ var_list = []
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
 
 
-mgui.geometry('2000x1000+5000+200')
+mgui.geometry('700x850+500+10')
 mgui.title('AppName')
 
-header = Label(text='My label', fg='red', bg='blue', font=("Helvetica",20)).pack()         #.place(x=700, y=200)
-new_user = Button(text = 'New User', command = registerUser2).pack()
-log_in = Button(text = "Log in", command=loadUserProfile).pack()
+header_label = Label(text='My Recommender System', fg='red', bg='blue', font=("Helvetica",25, 'bold')).pack()         #.place(x=700, y=200)
+new_user = Button(text = 'New User', font = ('Helvetica', 15), command = registerUser2).pack()
+or_label = Label(text = "or").pack()
+log_in = Button(text = "I have an account", command=promptUserLogin).pack()
 
 
 
