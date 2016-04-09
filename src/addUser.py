@@ -52,4 +52,16 @@ def incrementTotalUsers(new_total):
 		file.write(line)
 	file.close()
 
-registerUser()
+def doit():
+	stringliste = ""
+	for i in range(1,len(genres)):
+		stringliste+= "var"+str(i)+".get(),"
+		#h = open(addUserTo, "a")
+		#h.write("\n" + genres[i].lower()+"_c = Checkbutton(state = ACTIVE, text = '"+genres[i]+"', variable = var"+str(i)+").pack()")
+		#h.write("\n"+"var"+str(i)+" = IntVar()")
+
+	h = open(addUserTo, "a")
+	h.write(stringliste)
+	h.close()
+
+doit()
