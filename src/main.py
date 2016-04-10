@@ -121,14 +121,18 @@ def findMovies(this_user):
     - What about negative corelation?
       (ignore users with a negative corelation for now)
   '''
+  flip = {1:5, 2:4, 3:3, 4:2, 5:1}
   total_similarities = {} # {movie: (rating * similarity)} for all similar users (and shared movies)
   sum_of_similarities = {} # {movie: similarity} for all similar users (and shared movies)
   for user in user_ratings:
     if user == this_user: continue # skip this_user
     similarity = pearson(this_user, user) # compute similarity
-    if similarity <= 0: continue # ignore un-simmilar users
+    if similarity == 0: continue # ignore un-simmilar users
     for movie in user_ratings[user]:
       if movie not in user_ratings[this_user]: # if movie not seen by this_user
+        if similarity <= 0: # negative correlation, flip rating and similarity
+          rating = flip[user_ratings[user][movie]]
+          similarity = abs(similarity)
         total_similarities.setdefault(movie, 0)
         total_similarities[movie] += (user_ratings[user][movie] * similarity)
         sum_of_similarities.setdefault(movie, 0)
