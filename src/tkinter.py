@@ -3,6 +3,7 @@ from tkinter import *
 readNextUserIdFrom = "../data/u.info"
 addUserTo = "../data/u.user"
 from main import findMovies
+from addUser import *
 
 
 def promptUserLogin():
@@ -27,7 +28,7 @@ def recommend(user):
         listbox.insert(END, item)
     
 
-def registerUser2():
+def registerUser():
     form_label = Label(text= 'Personal information:').pack()
 
     name_l = Label(text='Name:').pack()
@@ -88,27 +89,6 @@ def save():
 def close():
     mgui.destroy()
 
-def getNewUserId():
-	file = open(readNextUserIdFrom, "r")
-	next_id = str(int(file.readline().split()[0])+1)            #get first word of first line of u.info, which contains amount of users. Increment and return as string
-	incrementTotalUsers(next_id)
-	file.close()
-	return next_id
-
-def incrementTotalUsers(new_total):
-	file = open(readNextUserIdFrom, "r")
-	lines = file.readlines()
-	file.close()
-	lines[0] = str(new_total) + " users\n"
-	file = open(readNextUserIdFrom, "w")
-	for line in lines:
-		file.write(line)
-	file.close()
-
-def addToUsers(line):
-	users = open(addUserTo, "a")
-	users.write("\n" + line)
-	users.close()
 
 mgui = Tk()
 
@@ -148,7 +128,7 @@ mgui.geometry('700x850+500+10')
 mgui.title('AppName')
 
 header_label = Label(text='My Recommender System', fg='red', bg='blue', font=("Helvetica",25, 'bold')).pack()         #.place(x=700, y=200)
-new_user = Button(text = 'New User', font = ('Helvetica', 15), command = registerUser2).pack()
+new_user = Button(text = 'New User', font = ('Helvetica', 15), command = registerUser).pack()
 or_label = Label(text = "or").pack()
 log_in = Button(text = "I have an account", command=promptUserLogin).pack()
 

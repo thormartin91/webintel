@@ -1,3 +1,40 @@
+genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
+readNextUserIdFrom = "../data/u.info"
+addUserTo = "../data/u.user"
+
+def incrementTotalUsers(new_total):
+	file = open(readNextUserIdFrom, "r")
+	lines = file.readlines()
+	file.close()
+	lines[0] = str(new_total) + " users\n"
+	file = open(readNextUserIdFrom, "w")
+	for line in lines:
+		file.write(line)
+	file.close()
+
+def getNewUserId():
+	file = open(readNextUserIdFrom, "r")
+	next_id = str(int(file.readline().split()[0])+1)            #get first word of first line of u.info, which contains amount of users. Increment and return as string
+	incrementTotalUsers(next_id)
+	file.close()
+	return next_id
+
+def addToUsers(line):
+	users = open(addUserTo, "a")
+	users.write("\n" + line)
+	users.close()
+"""
+
+
+
+
+
+
+
+
+
+
+
 #genres from 0 - 18
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
 
@@ -64,4 +101,4 @@ def doit():
 	h.write(stringliste)
 	h.close()
 
-doit()
+doit()"""
