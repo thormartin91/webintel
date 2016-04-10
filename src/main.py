@@ -98,8 +98,8 @@ def pearson(x, y):
   '''
   from math import sqrt
   shared_movies = []
-  for movie in user_ratings[x]:
-    if movie in user_ratings[y]:
+  for movie in user_ratings.get(x,{}):
+    if movie in user_ratings.get(y,{}):
       shared_movies.append(movie)
   n =len(shared_movies)
   if n == 0: return 0
