@@ -17,16 +17,21 @@ def loadUserProfile(user):
     recommend_b = Button(text = 'Recommend a movie for me', command = lambda: recommend(user)).pack()
 
 def recommend(user):
-    print('Shit worked')
     ranked_list = findMovies(user)[0:10]
-    print(ranked_list)
+    filler_l = Label(text = '').pack()
+    recommendations_l = Label(text = 'Based on your user profile, we recommend these movies for you:').pack()
+    listbox = Listbox(mgui, width=50, height=15)
+    listbox.pack()
+    
+    for item in ranked_list:
+        listbox.insert(END, item)
     
 
 def registerUser2():
     form_label = Label(text= 'Personal information:').pack()
 
     name_l = Label(text='Name:').pack()
-    name_e=Entry(textvariable = name).pack()#"Name:"										#Name will not be registered with user
+    name_e=Entry(textvariable = name).pack()										#Name will not be registered with user
     age_l = Label(text='Age:').pack()
     age_e = Entry(textvariable = age).pack()
     gender_l = Label(text='Gender (M/F/O):').pack()

@@ -138,4 +138,8 @@ def findMovies(this_user):
   rankings = [(round(total/sum_of_similarities[item],3),item) for item,total in total_similarities.items()]
   rankings.sort()
   rankings.reverse()
-  return rankings
+  rankings_clean = []
+  [rankings_clean.append(item[1]) for item in rankings[:10]] 
+    #add.replace("}","")
+    #rankings_clean.add(add)
+  return rankings_clean
