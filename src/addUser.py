@@ -1,6 +1,9 @@
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
 readNextUserIdFrom = "../data/u.info"
 addUserTo = "../data/u.user"
+readSentimentsFrom = "../data/database.sentiments"
+addRatingTo = "../data/database.ratings"
+readMovieItemsFrom = "../data/u.item"
 
 def incrementTotalUsers(new_total):
 	file = open(readNextUserIdFrom, "r")
@@ -23,8 +26,41 @@ def addToUsers(line):
 	users = open(addUserTo, "a")
 	users.write("\n" + line)
 	users.close()
-"""
 
+def addSentimentUser():
+	file_r = open(readSentimentsFrom, "r")
+	lines = file_r.readlines()					#Format: movie_url | title | review | sentiment_score | rating
+	file_r.close()								
+	file_w = open(addRatingTo, "a")				#Format: user_id | movie_id | rating | timestamp
+	for line in lines:
+		temp_list = line.split('|')
+		movie_info = getMovieInfo(temp_list[1])
+		movie_id = movie_info[0]
+		genre = movie_info[1]
+		user_id = getNewUserId()
+		rating = temp_list[4].strip()
+		file_w.write('\n'+user_id + '|' + movie_id + '|' + rating + '|timestamp')
+		addToUsers(user_id + "|age|G|Occupation|88888|"+ genre)
+	file_w.close()
+
+def getMovieInfo(title):
+	movie_id = ''
+	file = open(readMovieItemsFrom, "r")		#Format: movie_id | title | data | url | bitstring of genres it is
+	lines = file.readlines()
+	id_and_genre = []
+	for line in lines:
+		temp_list = line.split("|")
+		if title in temp_list[1]:
+			movie_id = temp_list[0]
+			genre = temp_list[5]
+			break
+		else:
+			movie_id = "error"
+	id_and_genre = [movie_id,genre]
+	return id_and_genre
+
+
+"""
 
 
 
