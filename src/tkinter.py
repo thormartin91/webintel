@@ -19,14 +19,37 @@ def loadUserProfile(user):
 
 def recommend(user):
     ranked_list = findMovies(user)[0:10]
-    filler_l = Label(text = '').pack()
-    recommendations_l = Label(text = 'Based on your user profile, we recommend these movies for you:').pack()
-    listbox = Listbox(mgui, width=50, height=15)
-    listbox.pack()
-    
-    for item in ranked_list:
-        listbox.insert(END, item)
-    
+    if ranked_list:
+        filler_l = Label(text = '').pack()
+        recommendations_l = Label(text = 'Based on your user profile, we recommend these movies for you:').pack()
+        listbox = Listbox(mgui, width=50, height=15)
+        listbox.pack()
+        for item in ranked_list:
+            listbox.insert(END, item)
+    else:
+        filler_2 = Label(text = 'Please select movies you have seen and liked:').pack()
+        possiblyRatableMovies = topGenre(user)
+        v1 = IntVar()
+        v2 = IntVar()
+        v3 = IntVar()
+        v4 = IntVar()
+        v5 = IntVar()
+        v6 = IntVar()
+        v7 = IntVar()
+        v8 = IntVar()
+        v9 = IntVar()
+        v10 = IntVar()
+
+        movieToRate1 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[0]), variable = v1).pack()
+        movieToRate2 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[1]), variable = v2).pack()
+        movieToRate3 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[2]), variable = v3).pack()
+        movieToRate4 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[3]), variable = v4).pack()
+        movieToRate5 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[4]), variable = v5).pack()
+        movieToRate6 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[5]), variable = v6).pack()
+        movieToRate7 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[6]), variable = v7).pack()
+        movieToRate8 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[7]), variable = v8).pack()
+        movieToRate9 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[8]), variable = v9).pack()
+        movieToRate10 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[9]), variable = v10).pack()
 
 def registerUser():
     form_label = Label(text= 'Personal information:').pack()

@@ -1,3 +1,5 @@
+import main
+
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
 readNextUserIdFrom = "../data/u.info"
 addUserTo = "../data/u.user"
@@ -58,7 +60,6 @@ def getMovieInfo(title):
 			movie_id = "error"
 	id_and_genre = [movie_id,genre]
 	return id_and_genre
-
 
 """
 
