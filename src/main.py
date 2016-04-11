@@ -129,6 +129,11 @@ def findMovies(this_user):
     - What about negative corelation?
       (ignore users with a negative corelation for now)
   '''
+  loadData()
+  file = open('../data/database.ratings', "r")
+  lines = file.readlines()
+  file.close()
+  print('FROM FIND MOVIES' , lines.pop())
   flip = {1:5, 2:4, 3:3, 4:2, 5:1}
   total_similarities = {} # {movie: (rating * similarity)} for all similar users (and shared movies)
   sum_of_similarities = {} # {movie: similarity} for all similar users (and shared movies)
@@ -154,4 +159,5 @@ def findMovies(this_user):
   [rankings_clean.append(item[1]) for item in rankings[:10]] 
     #add.replace("}","")
     #rankings_clean.add(add)
+  print(rankings_clean , 'THIS IS THE RETURNED LIST FROM FINDMOVIES')
   return rankings_clean

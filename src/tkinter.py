@@ -20,6 +20,7 @@ def loadUserProfile(user):
 
 def recommend(user):
     ranked_list = findMovies(user)
+    print(ranked_list , "RANKED LIST!")
     if ranked_list:
         filler_l = Label(text = '').pack()
         recommendations_l = Label(text = 'Based on your user profile, we recommend these movies for you:').pack()
@@ -52,11 +53,14 @@ def saveRatings(user, movies):
         print('This one is = ' + str(v_list[i]))
         print('movie is = ' + movies[i])
         if v_list[i] == 1:
-            movie_id = getMovieInfo(str(movies[i]))
-            addRating(movie_id, user, "5")              #addRating(movie_id, user_id, rating)
+            addRating(movies[i], user, "5")              #addRating(movie_id, user_id, rating)
         else:
             pass
-    recommend(user)
+    file = open('../data/database.ratings', "r")
+    lines = file.readlines()
+    file.close()
+    print(lines.pop())
+    recommend_b = Button(text='Recommend', command = lambda: recommend(user)).pack()
 
 def registerUser():
     form_label = Label(text= 'Personal information:').pack()
