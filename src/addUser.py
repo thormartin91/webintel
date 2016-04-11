@@ -1,8 +1,7 @@
-import main
 
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
 readNextUserIdFrom = "../data/u.info"
-addUserTo = "../data/u.user"
+addUserTo = "../data/database.users"
 readSentimentsFrom = "../data/database.sentiments"
 addRatingTo = "../data/database.ratings"
 readMovieItemsFrom = "../data/u.item"
@@ -47,7 +46,7 @@ def addSentimentUser():
 
 def getMovieInfo(title):
 	movie_id = ''
-	file = open(readMovieItemsFrom, "r")		#Format: movie_id | title | data | url | bitstring of genres it is
+	file = open(readMovieItemsFrom, encoding = "ISO-8859-1")		#Format: movie_id | title | data | url | bitstring of genres it is
 	lines = file.readlines()
 	id_and_genre = []
 	for line in lines:

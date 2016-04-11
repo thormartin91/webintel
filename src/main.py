@@ -38,14 +38,14 @@ def loadData(path='../data'):
     #print movie_id,title,release_date,video_date,imdb,genres_string
 
   # Load users
-  for line in open(path+'/newU.user'):
+  for line in open(path+'/database.users'):
     (user_id, age, gender, occupation, postal_code, genres_string) = line.split('|')
     users.setdefault(user_id,{})
     users[user_id]['genres'] = genres_string.replace('\n', '')
     #print user_id, age, gender, occupation, postal_code, genres_string
   
   # Load user_ratings
-  for line in open(path+'/u.data'):
+  for line in open(path+'/database.ratings'):
     (user_id,movie_id,rating,timestamp) = line.split('\t')
     user_ratings.setdefault(user_id,{})
     user_ratings[user_id][movies[movie_id]['title']] = float(rating)
@@ -76,6 +76,7 @@ def topGenre(user_id):
     # Returns a dictionary of the users prefered genres with sorted list of top rated movies
     # top_list = { 'genre': [(average_rating, movie_title), ...] }
   '''
+  loadData()
   user_genre = users[user_id]['genres']
   #top_dict = {}
   top_list = []

@@ -1,6 +1,6 @@
 import random
 defaultReadFrom = "../data/u.user"
-defaultReadTo = "../data/newU.user"
+defaultReadTo = "../data/database.users"
 
 def generateBitString():
     bitstring = ""

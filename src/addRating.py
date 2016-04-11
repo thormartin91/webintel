@@ -1,4 +1,4 @@
-ratings_file = '../data/u.data'
+ratings_file = '../data/database.ratings'
 info_file = '../data/u.info'
 
 

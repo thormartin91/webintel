@@ -1,9 +1,10 @@
 import sys
 from tkinter import *
 readNextUserIdFrom = "../data/u.info"
-addUserTo = "../data/u.user"
-from main import findMovies
+addUserTo = "../data/database.users"
+from main import *
 from addUser import *
+from addRating import *
 
 
 def promptUserLogin():
@@ -18,7 +19,7 @@ def loadUserProfile(user):
     recommend_b = Button(text = 'Recommend a movie for me', command = lambda: recommend(user)).pack()
 
 def recommend(user):
-    ranked_list = findMovies(user)[0:10]
+    ranked_list = findMovies(user)
     if ranked_list:
         filler_l = Label(text = '').pack()
         recommendations_l = Label(text = 'Based on your user profile, we recommend these movies for you:').pack()
@@ -27,18 +28,9 @@ def recommend(user):
         for item in ranked_list:
             listbox.insert(END, item)
     else:
-        filler_2 = Label(text = 'Please select movies you have seen and liked:').pack()
+        select_l = Label(text = 'Please select movies you have seen and liked:').pack()
+        filler_l = Labeltext = Label(text = '').pack()
         possiblyRatableMovies = topGenre(user)
-        v1 = IntVar()
-        v2 = IntVar()
-        v3 = IntVar()
-        v4 = IntVar()
-        v5 = IntVar()
-        v6 = IntVar()
-        v7 = IntVar()
-        v8 = IntVar()
-        v9 = IntVar()
-        v10 = IntVar()
 
         movieToRate1 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[0]), variable = v1).pack()
         movieToRate2 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[1]), variable = v2).pack()
@@ -50,6 +42,21 @@ def recommend(user):
         movieToRate8 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[7]), variable = v8).pack()
         movieToRate9 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[8]), variable = v9).pack()
         movieToRate10 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[9]), variable = v10).pack()
+        cont_b = Button(text='Continue', command = lambda: saveRatings(user, possiblyRatableMovies)).pack()
+        
+def saveRatings(user, movies):
+    v_list = [v1.get(),v2.get(),v3.get(),v4.get(),v5.get(),v6.get(),v7.get(),v8.get(),v9.get(),v10.get()]
+    print(len(v_list))
+    print(v_list)
+    for i in range(0,len(v_list)):
+        print('This one is = ' + str(v_list[i]))
+        print('movie is = ' + movies[i])
+        if v_list[i] == 1:
+            movie_id = getMovieInfo(str(movies[i]))
+            addRating(movie_id, user, "5")              #addRating(movie_id, user_id, rating)
+        else:
+            pass
+    recommend(user)
 
 def registerUser():
     form_label = Label(text= 'Personal information:').pack()
@@ -65,9 +72,9 @@ def registerUser():
     zip_l = Label(text='Zip code:').pack()
     zip_e = Entry(textvariable = zip_code).pack()
 
-    continueButton = Button(text = 'Continue', command = cont).pack()
+    continueButton = Button(text = 'Continue', command = setPrefs).pack()
 
-def cont():
+def setPrefs():
     pref_label = Label(text= 'Check the boxes of your preferred genres:').pack()
 
 
@@ -123,6 +130,7 @@ occupation = StringVar()
 zip_code = StringVar()
 preferences = StringVar()
 
+#Genre variables
 var1 = IntVar()
 var2 = IntVar()
 var3 = IntVar()
@@ -142,6 +150,19 @@ var16 = IntVar()
 var17 = IntVar()
 var18 = IntVar()
 var_list = []
+
+# Movie rating variables
+v1 = IntVar()
+v2 = IntVar()
+v3 = IntVar()
+v4 = IntVar()
+v5 = IntVar()
+v6 = IntVar()
+v7 = IntVar()
+v8 = IntVar()
+v9 = IntVar()
+v10 = IntVar()
+v_list = []
 
 #genres from 0 - 18
 genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']
