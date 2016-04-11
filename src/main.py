@@ -94,6 +94,7 @@ def topGenre(user_id):
   #for movie_list in top_dict:
   #  top_dict[movie_list].sort()
   #  top_dict[movie_list].reverse()
+  top_list = list(set(top_list)) # remove duplicates
   top_list.sort(reverse=True)
   top_list_clean = []
   [top_list_clean.append(item[1]) for item in top_list[:10]] 
