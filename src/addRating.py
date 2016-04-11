@@ -1,12 +1,14 @@
+import addUser
+
 ratings_file = '../data/u.data'
 info_file = '../data/u.info'
 
-
-def addRating(movie_id, user_id, rating):
+def addRating(movie_title, user_id, rating):
 	'''
 	Adds given ratings to file, and updates total ratings number
 	'''
 	import time
+	movie_id = addUser.getMovieInfo(movie_title)[0]
 	timestamp = int(time.time())
 	line = str(user_id) + '\t' + str(movie_id) + '\t' + str(rating) + '\t' + str(timestamp)
 	addToRatingsFile(line)
