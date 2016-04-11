@@ -126,8 +126,10 @@ def pearson(x, y):
 
 def findMovies(this_user):
   '''
-  Returns an ordered list of reccommended movies for the given user
-    [(calculated_ranking, movie_title), ...]
+  Returns a list of top 10 movie titles reccommended movies for the given user
+  DEPRECATED:
+    # Returns an ordered list of reccommended movies for the given user
+      # [(calculated_ranking, movie_title), ...]
   '''
   loadData()
   flip = {1:5, 2:4, 3:3, 4:2, 5:1}
@@ -149,11 +151,7 @@ def findMovies(this_user):
   # compute calculated ranking for this_user
   # sum(rating * similarity) / sum(similarity) for all users sharing the movie
   rankings = [(round(total/sum_of_similarities[item],3),item) for item,total in total_similarities.items()]
-  rankings.sort()
-  rankings.reverse()
+  rankings.sort(reverse=True)
   rankings_clean = []
   [rankings_clean.append(item[1]) for item in rankings[:10]] 
-    #add.replace("}","")
-    #rankings_clean.add(add)
-  print(rankings_clean , 'THIS IS THE RETURNED LIST FROM FINDMOVIES')
   return rankings_clean
