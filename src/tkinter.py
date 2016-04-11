@@ -53,13 +53,9 @@ def saveRatings(user, movies):
         print('This one is = ' + str(v_list[i]))
         print('movie is = ' + movies[i])
         if v_list[i] == 1:
-            addRating(movies[i], user, "5")              #addRating(movie_id, user_id, rating)
+            addRating(movies[i], user, "4.8")              #addRating(movie_id, user_id, rating)
         else:
             pass
-    file = open('../data/database.ratings', "r")
-    lines = file.readlines()
-    file.close()
-    print(lines.pop())
     recommend_b = Button(text='Recommend', command = lambda: recommend(user)).pack()
 
 def registerUser():

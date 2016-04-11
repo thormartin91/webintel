@@ -103,16 +103,18 @@ def topGenre(user_id):
 def pearson(x, y):
   '''
   Returns the similarity between two objects
+  HACK:
+    - ceiling of average due to cold start only accepting top score..
   '''
-  from math import sqrt
+  from math import sqrt, ceil
   shared_movies = []
   for movie in user_ratings.get(x,{}):
     if movie in user_ratings.get(y,{}):
       shared_movies.append(movie)
   n =len(shared_movies)
   if n == 0: return 0
-  mean_x = sum(user_ratings[x][movie] for movie in shared_movies)/n
-  mean_y = sum(user_ratings[y][movie] for movie in shared_movies)/n
+  mean_x = sum(ceil(user_ratings[x][movie]) for movie in shared_movies)/n
+  mean_y = sum(ceil(user_ratings[y][movie]) for movie in shared_movies)/n
   numerator,denominator = 0,0
   for movie in shared_movies:
     numerator += ((user_ratings[x][movie] - mean_x) * (user_ratings[y][movie] - mean_y))
@@ -125,15 +127,8 @@ def findMovies(this_user):
   '''
   Returns an ordered list of reccommended movies for the given user
     [(calculated_ranking, movie_title), ...]
-  TODO:
-    - What about negative corelation?
-      (ignore users with a negative corelation for now)
   '''
   loadData()
-  file = open('../data/database.ratings', "r")
-  lines = file.readlines()
-  file.close()
-  print('FROM FIND MOVIES' , lines.pop())
   flip = {1:5, 2:4, 3:3, 4:2, 5:1}
   total_similarities = {} # {movie: (rating * similarity)} for all similar users (and shared movies)
   sum_of_similarities = {} # {movie: similarity} for all similar users (and shared movies)
