@@ -71,25 +71,32 @@ loadData()
 
 def topGenre(user_id):
   '''
-  Returns a dictionary of the users prefered genres with sorted list of top rated movies
-  top_list = { 'genre': [(average_rating, movie_title), ...] }
+  Returns a list of top 10 movie titles within all genres selected by user
+  DEPRECATED:
+    # Returns a dictionary of the users prefered genres with sorted list of top rated movies
+    # top_list = { 'genre': [(average_rating, movie_title), ...] }
   '''
   user_genre = users[user_id]['genres']
-  top_list = {}
+  #top_dict = {}
+  top_list = []
   for movie in movies:
     title = movies[movie]['title']
     if title not in movie_ratings: continue # skip movie if it has no rating
     for index,value in enumerate(user_genre): # loop trough users genres
       if value == '1': # user prefers this genre
         if movies[movie]['genres'][index] == '1': # this movie is in this genre
-          top_list.setdefault(genres[index], [])
+          #top_dict.setdefault(genres[index], [])
           average_rating = round(sum(movie_ratings[title].values())/len(movie_ratings[title]), 3)
-          top_list[genres[index]].append((average_rating, title))
+          #top_dict[genres[index]].append((average_rating, title))
+          top_list.append((average_rating,title))
   # sort each list with decending rating
-  for movie_list in top_list:
-    top_list[movie_list].sort()
-    top_list[movie_list].reverse()
-  return top_list
+  #for movie_list in top_dict:
+  #  top_dict[movie_list].sort()
+  #  top_dict[movie_list].reverse()
+  top_list.sort(reverse=True)
+  top_list_clean = []
+  [top_list_clean.append(item[1]) for item in top_list[:10]] 
+  return top_list_clean
 
 
 def pearson(x, y):
