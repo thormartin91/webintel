@@ -41,6 +41,7 @@ def recommend():
     else:
         select_l.pack()
         filler.pack()
+        global possiblyRatableMovies
         possiblyRatableMovies = topGenre(user)
 
         movieToRate1 = Checkbutton(state = ACTIVE, text = str(possiblyRatableMovies[0]), variable = v1)
@@ -64,9 +65,13 @@ def recommend():
         movieToRate8.pack()
         movieToRate9.pack()
         movieToRate10.pack()
-        cont_b = Button(text='Continue', command = lambda: saveRatings(possiblyRatableMovies)).pack()
+        #cont_b = Button(text='Continue', command = lambda: saveRatings(possiblyRatableMovies)).pack()
+        cont_b.pack()
         
-def saveRatings(movies):
+def saveRatings():
+    movies = possiblyRatableMovies
+    print(possiblyRatableMovies, "WAAAAAAAAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAA")
+    cont_b.pack_forget()
     v_list = [v1.get(),v2.get(),v3.get(),v4.get(),v5.get(),v6.get(),v7.get(),v8.get(),v9.get(),v10.get()]
     print(len(v_list))
     print(v_list)
@@ -101,6 +106,7 @@ def registerUser():
     continueButton.pack()
 
 def setPrefs():
+    continueButton.pack_forget()
     form_label.pack_forget()
 
     name_l.pack_forget()
@@ -112,9 +118,7 @@ def setPrefs():
     occ_l.pack_forget()
     occ_e.pack_forget()
     zip_l.pack_forget()
-    zip_e.pack_forget()
-
-    continueButton.pack_forget()    
+    zip_e.pack_forget()   
 
     pref_label.pack()
 
@@ -142,6 +146,7 @@ def setPrefs():
     saveButton.pack()
 
 def save():
+    saveButton.pack_forget()
     pref_label.pack_forget()
     action_c.pack_forget()
     adventure_c.pack_forget()
@@ -240,7 +245,8 @@ mgui.geometry('700x850+500+10')
 mgui.title('AppName')
 
 #Labels and buttons to be shown and hidden
-header_label = Label(mgui,text='My Recommender System', fg='red', bg='blue', font=("Helvetica",25, 'bold')).pack()         #.place(x=700, y=200)
+header_label = Label(mgui,text='My Recommender System', fg="#fff", font=("Helvetica",25, 'bold')).pack()    #.place(x=700, y=200)
+start_filler = Label(mgui, text = '').pack()
 start_b = Button(text = 'Home', command = start).pack()
 new_user = Button(mgui, text = 'New User', command = registerUser)#.pack()
 or_label = Label(mgui, text = "or")#.pack()
@@ -252,6 +258,9 @@ select_l = Label(text = 'Please select movies you have seen and liked:')
 filler = Label(text = '')
 login_b = Button(text = 'Log in', command = lambda: loadUserProfile())
 recommend_b = Button(text = 'Recommend a movie for me', command = lambda: recommend())
+
+possiblyRatableMovies = []
+cont_b = Button(text='Continue', command = lambda: saveRatings())
 
 form_label = Label(text= 'Personal information:')
 name_l = Label(text='Name:')
@@ -288,8 +297,7 @@ western_c = Checkbutton(state = ACTIVE, text = 'Western', variable = var18)
 saveButton = Button(text = 'Save', command = save)
 
 registeredLabel = Label(text = 'You are now registered! Log in with user ID: ')
-ok_button = Button(text = 'Ok', command = lambda: promptUserLogin())
-
+ok_button = Button(text = 'OK', command = lambda: promptUserLogin())
 hello_label = Label(mgui, text = 'Hello, friendly user!', font = ('helvetica', 15))
 
 
