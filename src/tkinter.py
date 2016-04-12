@@ -74,7 +74,7 @@ def saveRatings(movies):
         print('This one is = ' + str(v_list[i]))
         print('movie is = ' + movies[i])
         if v_list[i] == 1:
-            addRating(movies[i], str(current_user), "5")              #addRating(movie_id, user_id, rating)
+            addRating(movies[i], str(current_user.get()), "4.8")              #addRating(movie_id, user_id, rating)
         else:
             pass
     file = open('../data/database.ratings', "r")
