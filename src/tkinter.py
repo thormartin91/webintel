@@ -38,6 +38,7 @@ def recommend():
         listbox.pack()
         for item in ranked_list:
             listbox.insert(END, item)
+        close_b = Button(text = 'Close', command = lambda: mgui.destroy()).pack()
     else:
         select_l.pack()
         filler.pack()
@@ -242,10 +243,10 @@ genres = ['unknown', 'Action', 'Adventure', 'Animation', "Children's", 'Comedy',
 
 #GUI specs
 mgui.geometry('700x850+500+10')
-mgui.title('AppName')
+mgui.title('RecSys')
 
 #Labels and buttons to be shown and hidden
-header_label = Label(mgui,text='My Recommender System', fg="#fff", font=("Helvetica",25, 'bold')).pack()    #.place(x=700, y=200)
+header_label = Label(mgui,text='My Recommender System', fg="black", font=("Helvetica",25, 'bold')).pack()    #.place(x=700, y=200)
 start_filler = Label(mgui, text = '').pack()
 start_b = Button(text = 'Home', command = start).pack()
 new_user = Button(mgui, text = 'New User', command = registerUser)#.pack()
